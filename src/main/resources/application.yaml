@@ -4,10 +4,10 @@ spring:
   application:
     name: hmdp
   datasource:
-    url: jdbc:mysql://localhost:3306/hmredis
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/hmredis
     username: root
     password: 123456
-    driver-class-name: com.mysql.cj.jdbc.Driver
   redis:
     host: 192.168.10.129
     port: 6379
@@ -25,5 +25,3 @@ mybatis-plus:
 logging:
   level:
     com.hmdp: debug
-  pattern:
-    dateformat: mm:ss.SSS
