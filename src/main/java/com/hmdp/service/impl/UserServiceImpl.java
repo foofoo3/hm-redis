@@ -1,6 +1,7 @@
 package com.hmdp.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -79,7 +81,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         String token = UUID.randomUUID().toString(true);
 //        user转为hash存储
         UserDTO userDTO = BeanUtil.copyProperties(user, UserDTO.class);
-        Map<String, Object> userMap = BeanUtil.beanToMap(userDTO);
+        Map<String, Object> userMap = BeanUtil.beanToMap(userDTO,new HashMap<>(),
+                CopyOptions.create().setIgnoreNullValue(true)
+                        .setFieldValueEditor((fieldName,fieldValue) -> fieldValue.toString()));
 //        存储
         String tokenKey =LOGIN_USER_KEY + token;
         stringRedisTemplate.opsForHash().putAll(tokenKey,userMap);
